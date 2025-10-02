@@ -13,6 +13,12 @@ from riley_service import post_job_with_riley, get_job_posting_stats
 
 app = FastAPI(title="ThinkLoop API")
 
+# Create tables on startup
+@app.on_event("startup") 
+def startup_event():
+    from database import engine
+    from models import Base
+    Base.metadata.create_all(bind=engine)
 # CORS - allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
