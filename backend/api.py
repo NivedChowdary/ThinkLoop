@@ -239,6 +239,7 @@ def add_candidate(
                 "email": candidate.email,
                 "score": candidate.score,
                 "recommendation": candidate.recommendation,
+                "analysis": candidate.analysis,  # ← ADD THIS
                 "status": candidate.status
             }
         }
