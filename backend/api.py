@@ -24,6 +24,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://think-loop.vercel.app",
+        "https://getthinkloop.com",
+        "https://www.getthinkloop.com",
         "http://localhost:3000"
     ],
     allow_credentials=True,
