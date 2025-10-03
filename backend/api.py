@@ -326,6 +326,7 @@ async def upload_candidate_resume(
                 "email": candidate.email,
                 "score": candidate.score,
                 "recommendation": candidate.recommendation,
+                "analysis": candidate.analysis,  # ADD THIS LINE
                 "resume_preview": resume_text[:200] + "..." if len(resume_text) > 200 else resume_text
             }
         }
