@@ -223,6 +223,7 @@
                 <h1>ThinkLoop</h1>
                 <div class="header-right">
                     <div class="user-info" id="userEmail"></div>
+                    <button onclick="logout()" class="secondary small" style="margin-left: 10px;">Logout</button>
                 </div>
             </div>
 
@@ -234,7 +235,7 @@
                         <h2>✨ Create Job with Jamie</h2>
                         <textarea id="jobRequirements" rows="3" placeholder="e.g., Senior Python dev, Django, fintech, remote, $120k"></textarea>
                         <button onclick="createJob()">Generate Job Description</button>
-                        <div id="jobResult"></div>
+                        <div id="jobResult" style="max-height: 500px; overflow-y: auto;"></div>
                     </div>
 
                     <!-- Add Candidate -->
@@ -342,7 +343,11 @@
                 document.getElementById('authMessage').innerText = data.detail;
             }
         }
-
+        async function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        location.reload();
+        }
         async function createJob() {
             const requirements = document.getElementById('jobRequirements').value;
             document.getElementById('jobResult').innerHTML = '<div class="loading"><div class="spinner"></div>Jamie is creating your job description...</div>';
