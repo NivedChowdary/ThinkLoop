@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Form, Header
+from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Form, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -9,7 +9,7 @@ from candidate_service import add_and_score_candidate, get_job_candidates
 from auth import create_access_token, verify_token
 from resume_parser import parse_resume_file
 from riley_service import post_job_with_riley, get_job_posting_stats
-from rate_limiter import rate_limit
+from rate_limiter import signup_limiter, login_limiter, job_limiter, candidate_limiter
 from typing import Optional
 
 app = FastAPI(title="ThinkLoop API")
@@ -87,11 +87,15 @@ def health_check():
     return {"status": "ok"}
 
 @app.post("/signup")
-@rate_limit(max_calls=5, window_seconds=3600)  # 5 signups per hour per IP
-def signup(request: SignupRequest, db: Session = Depends(get_db)):
+def signup(
+    request_data: SignupRequest, 
+    request: Request,
+    db: Session = Depends(get_db),
+    _: None = Depends(signup_limiter)
+):
     try:
-        user, error = create_user(db, request.email, request.password, 
-                                  request.full_name, request.company_name)
+        user, error = create_user(db, request_data.email, request_data.password, 
+                                  request_data.full_name, request_data.company_name)
         if error:
             raise HTTPException(status_code=400, detail=error)
         
@@ -105,14 +109,21 @@ def signup(request: SignupRequest, db: Session = Depends(get_db)):
             }, 
             "token": token
         }
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"Signup error: {e}")
         raise HTTPException(status_code=500, detail=f"Signup failed: {str(e)}")
 
 @app.post("/login")
-@rate_limit(max_calls=10, window_seconds=300)  # 10 login attempts per 5 min
-def login(request: LoginRequest, db: Session = Depends(get_db)):
+def login(
+    request_data: LoginRequest, 
+    request: Request,
+    db: Session = Depends(get_db),
+    _: None = Depends(login_limiter)
+):
     try:
-        user = authenticate_user(db, request.email, request.password)
+        user = authenticate_user(db, request_data.email, request_data.password)
         if not user:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
@@ -129,17 +140,19 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Login error: {e}")
         raise HTTPException(status_code=500, detail=f"Login failed: {str(e)}")
 
 @app.post("/jobs")
-@rate_limit(max_calls=20, window_seconds=3600)  # 20 jobs per hour
 def create_job(
-    request: CreateJobRequest,
+    request_data: CreateJobRequest,
+    request: Request,
     db: Session = Depends(get_db),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    _: None = Depends(job_limiter)
 ):
     try:
-        job = create_job_from_requirements(db, user.id, request.requirements)
+        job = create_job_from_requirements(db, user.id, request_data.requirements)
         return {
             "job": {
                 "id": job.id, 
@@ -150,6 +163,7 @@ def create_job(
             }
         }
     except Exception as e:
+        print(f"Job creation error: {e}")
         raise HTTPException(status_code=500, detail=f"Job creation failed: {str(e)}")
 
 @app.get("/jobs")
@@ -171,6 +185,7 @@ def list_jobs(
             ]
         }
     except Exception as e:
+        print(f"List jobs error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to load jobs: {str(e)}")
 
 @app.get("/jobs/{job_id}")
@@ -196,22 +211,23 @@ def get_job_details(
     }
 
 @app.post("/candidates")
-@rate_limit(max_calls=50, window_seconds=3600)  # 50 candidates per hour
 def add_candidate(
-    request: AddCandidateRequest,
+    request_data: AddCandidateRequest,
+    request: Request,
     db: Session = Depends(get_db),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    _: None = Depends(candidate_limiter)
 ):
     try:
         # Verify job belongs to user
         from models import Job
-        job = db.query(Job).filter(Job.id == request.job_id, Job.user_id == user.id).first()
+        job = db.query(Job).filter(Job.id == request_data.job_id, Job.user_id == user.id).first()
         if not job:
             raise HTTPException(status_code=404, detail="Job not found")
         
         candidate, error = add_and_score_candidate(
-            db, request.job_id, request.resume_text, 
-            request.candidate_name, request.candidate_email, request.candidate_phone
+            db, request_data.job_id, request_data.resume_text, 
+            request_data.candidate_name, request_data.candidate_email, request_data.candidate_phone
         )
         if error:
             raise HTTPException(status_code=400, detail=error)
@@ -229,6 +245,7 @@ def add_candidate(
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Add candidate error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to add candidate: {str(e)}")
 
 @app.get("/jobs/{job_id}/candidates")
@@ -262,18 +279,20 @@ def list_candidates(
     except HTTPException:
         raise
     except Exception as e:
+        print(f"List candidates error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to load candidates: {str(e)}")
 
 @app.post("/candidates/upload")
-@rate_limit(max_calls=50, window_seconds=3600)
 async def upload_candidate_resume(
     job_id: str = Form(...),
     candidate_name: str = Form(...),
     candidate_email: str = Form(...),
     candidate_phone: Optional[str] = Form(None),
     resume_file: UploadFile = File(...),
+    request: Request = None,
     db: Session = Depends(get_db),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    _: None = Depends(candidate_limiter)
 ):
     try:
         # Verify job belongs to user
@@ -315,6 +334,7 @@ async def upload_candidate_resume(
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Upload error: {e}")
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
 @app.post("/jobs/{job_id}/post")
@@ -343,6 +363,7 @@ def post_job_to_boards(
             "boards": [p.board for p in postings]
         }
     except Exception as e:
+        print(f"Post job error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to post job: {str(e)}")
 
 @app.get("/jobs/{job_id}/stats")
@@ -363,6 +384,7 @@ def get_posting_stats(
     except HTTPException:
         raise
     except Exception as e:
+        print(f"Get stats error: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to load stats: {str(e)}")
 
 if __name__ == "__main__":

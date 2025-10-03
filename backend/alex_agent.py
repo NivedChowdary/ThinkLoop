@@ -363,4 +363,44 @@ if __name__ == "__main__":
     # Evaluate each answer
     evaluations = []
     for i, (question, answer) in enumerate(zip(questions, sample_answers), 1):
-        print(f"
+        print(f"Evaluating Q{i}...")
+        
+        eval_result = alex.evaluate_answer(question, answer)
+        evaluations.append({
+            "question": question['question'],
+            "answer": answer,
+            "score": eval_result['score'],
+            "assessment": eval_result['assessment']
+        })
+        
+        print(f"Score: {eval_result['score']}/10")
+        print(f"Assessment: {eval_result['assessment']}")
+        print()
+    
+    print("\n" + "="*60)
+    print("📊 Step 4: Alex generates overall summary...")
+    print("="*60)
+    
+    # Calculate overall score
+    avg_score = sum(e['score'] for e in evaluations) / len(evaluations)
+    overall_score = round(avg_score * 10)
+    
+    interview_data = {
+        "overall_score": overall_score,
+        "evaluations": evaluations,
+        "recommendation": alex._get_recommendation(avg_score)
+    }
+    
+    summary = alex.generate_interview_summary(interview_data)
+    
+    print(f"\nOVERALL SCORE: {overall_score}/100")
+    print("="*60)
+    print(summary)
+    print("="*60)
+    
+    print("\n✅ ALEX TEST COMPLETE!")
+    print("\nAlex can now:")
+    print("- Generate custom interview questions for any role")
+    print("- Evaluate candidate answers in real-time")
+    print("- Provide detailed feedback and recommendations")
+    print("- Conduct complete screening interviews")

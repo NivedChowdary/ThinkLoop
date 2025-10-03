@@ -1,8 +1,8 @@
 """
 Rate limiter to prevent API abuse and control Claude API costs
+Works as FastAPI dependency, not decorator
 """
 from fastapi import Request, HTTPException
-from functools import wraps
 from datetime import datetime, timedelta
 from collections import defaultdict
 import threading
@@ -27,111 +27,54 @@ def clean_old_entries():
             if not rate_limit_store[ip]:
                 del rate_limit_store[ip]
 
-def rate_limit(max_calls: int, window_seconds: int):
+class RateLimiter:
     """
-    Decorator to rate limit API endpoints
+    Rate limiter as FastAPI dependency
     
-    Args:
-        max_calls: Maximum number of calls allowed
-        window_seconds: Time window in seconds
-    
-    Example:
-        @rate_limit(max_calls=10, window_seconds=60)  # 10 calls per minute
-        def my_endpoint():
-            pass
+    Usage in endpoint:
+        @app.post("/signup")
+        def signup(request: Request, limiter: None = Depends(RateLimiter(max_calls=5, window_seconds=3600))):
+            ...
     """
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            # Get request object from kwargs
-            request = None
-            for arg in args:
-                if isinstance(arg, Request):
-                    request = arg
-                    break
-            
-            if not request:
-                # If no request found in args, check kwargs
-                request = kwargs.get('request')
-            
-            if not request:
-                # No request object, skip rate limiting
-                # This happens when endpoint doesn't have Request as parameter
-                # We'll get IP from the first argument if it's FastAPI's automatic injection
-                return await func(*args, **kwargs) if callable(func) and hasattr(func, '__name__') else func(*args, **kwargs)
-            
-            # Get client IP
-            client_ip = request.client.host if request.client else "unknown"
-            endpoint = request.url.path
-            
-            # Clean old entries periodically
-            if len(rate_limit_store) > 100:  # Clean when storage gets large
-                clean_old_entries()
-            
-            current_time = datetime.now()
-            window_start = current_time - timedelta(seconds=window_seconds)
-            
-            with store_lock:
-                # Get call history for this IP and endpoint
-                call_history = rate_limit_store[client_ip][endpoint]
-                
-                # Remove calls outside the window
-                call_history = [ts for ts in call_history if ts > window_start]
-                rate_limit_store[client_ip][endpoint] = call_history
-                
-                # Check if limit exceeded
-                if len(call_history) >= max_calls:
-                    raise HTTPException(
-                        status_code=429,
-                        detail=f"Rate limit exceeded. Max {max_calls} calls per {window_seconds} seconds. Try again later."
-                    )
-                
-                # Add current call
-                rate_limit_store[client_ip][endpoint].append(current_time)
-            
-            # Call the actual function
-            return await func(*args, **kwargs) if callable(func) and hasattr(func, '__name__') else func(*args, **kwargs)
+    
+    def __init__(self, max_calls: int, window_seconds: int):
+        self.max_calls = max_calls
+        self.window_seconds = window_seconds
+    
+    def __call__(self, request: Request):
+        # Get client IP
+        client_ip = request.client.host if request.client else "unknown"
+        endpoint = request.url.path
         
-        return wrapper
-    return decorator
-
-# For production: Consider using Redis for distributed rate limiting
-# This in-memory solution works for single-server deployments
-# For multi-server: Use Redis with the following structure:
-"""
-import redis
-from fastapi import Request, HTTPException
-from functools import wraps
-from datetime import datetime
-
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
-
-def rate_limit_redis(max_calls: int, window_seconds: int):
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            request = kwargs.get('request')
-            if not request:
-                return await func(*args, **kwargs)
+        # Clean old entries periodically
+        if len(rate_limit_store) > 100:
+            clean_old_entries()
+        
+        current_time = datetime.now()
+        window_start = current_time - timedelta(seconds=self.window_seconds)
+        
+        with store_lock:
+            # Get call history for this IP and endpoint
+            call_history = rate_limit_store[client_ip][endpoint]
             
-            client_ip = request.client.host
-            endpoint = request.url.path
-            key = f"rate_limit:{client_ip}:{endpoint}"
+            # Remove calls outside the window
+            call_history = [ts for ts in call_history if ts > window_start]
+            rate_limit_store[client_ip][endpoint] = call_history
             
-            # Increment counter
-            current = redis_client.incr(key)
-            
-            # Set expiry on first call
-            if current == 1:
-                redis_client.expire(key, window_seconds)
-            
-            if current > max_calls:
+            # Check if limit exceeded
+            if len(call_history) >= self.max_calls:
                 raise HTTPException(
                     status_code=429,
-                    detail=f"Rate limit exceeded. Max {max_calls} calls per {window_seconds} seconds."
+                    detail=f"Rate limit exceeded. Max {self.max_calls} calls per {self.window_seconds} seconds. Try again later."
                 )
             
-            return await func(*args, **kwargs)
-        return wrapper
-    return decorator
-"""
+            # Add current call
+            rate_limit_store[client_ip][endpoint].append(current_time)
+        
+        return None
+
+# Pre-configured rate limiters for common use cases
+signup_limiter = RateLimiter(max_calls=5, window_seconds=3600)  # 5 per hour
+login_limiter = RateLimiter(max_calls=10, window_seconds=300)   # 10 per 5 min
+job_limiter = RateLimiter(max_calls=20, window_seconds=3600)    # 20 per hour
+candidate_limiter = RateLimiter(max_calls=50, window_seconds=3600)  # 50 per hour
