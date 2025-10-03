@@ -8,93 +8,166 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: #000;
+            background: #0a0a0a;
             color: #fff;
             line-height: 1.5;
         }
         
-        /* Header */
-        .header {
+        /* Top Header */
+        .top-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.8);
+            height: 60px;
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px 24px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
             z-index: 1000;
         }
         
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            display: inline-block;
-        }
-        
-        .user-info {
+        .logo-section {
             display: flex;
             align-items: center;
             gap: 12px;
         }
         
-        .user-email {
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-badge {
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .btn-logout {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .btn-logout:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(239, 68, 68, 0.5);
         }
         
-        /* Main Container */
-        .container {
-            max-width: 1400px;
-            margin: 80px auto 0;
-            padding: 40px 24px;
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            width: 260px;
+            height: calc(100vh - 60px);
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px 0;
+            overflow-y: auto;
         }
         
-        /* Grid Layout */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+        .sidebar-section {
+            margin-bottom: 32px;
         }
         
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
+        .sidebar-title {
+            padding: 0 24px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 12px;
+        }
+        
+        .sidebar-item {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-left-color: rgba(102, 126, 234, 0.3);
+        }
+        
+        .sidebar-item.active {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #667eea;
+        }
+        
+        .sidebar-item .icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .sidebar-item .label {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .sidebar-item .badge {
+            padding: 2px 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            margin-top: 60px;
+            padding: 32px;
+            min-height: calc(100vh - 60px);
+        }
+        
+        .page-header {
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
         }
         
         /* Cards */
@@ -102,19 +175,25 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 32px;
+            padding: 24px;
+            margin-bottom: 24px;
             transition: all 0.3s;
         }
         
         .card:hover {
             border-color: rgba(102, 126, 234, 0.3);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
         
         .card-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -127,67 +206,48 @@
         input[type="file"],
         textarea {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 10px;
             color: #fff;
             font-size: 14px;
             font-family: inherit;
             transition: all 0.3s;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
         
-        input[type="email"]:focus,
-        input[type="password"]:focus,
-        input[type="text"]:focus,
+        input:focus,
         textarea:focus {
             outline: none;
             border-color: #667eea;
             background: rgba(0, 0, 0, 0.6);
         }
         
-        input[type="email"]::placeholder,
-        input[type="password"]::placeholder,
-        input[type="text"]::placeholder,
+        input::placeholder,
         textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
         }
         
         /* Buttons */
         .btn {
-            width: 100%;
-            padding: 14px 24px;
+            padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             color: #fff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .btn:hover {
@@ -212,32 +272,26 @@
         }
         
         .btn-small {
-            padding: 10px 20px;
+            padding: 8px 16px;
             font-size: 13px;
-            width: auto;
         }
         
-        /* Tab Buttons */
-        .tab-buttons {
+        .btn-group {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
-        .tab-buttons .btn-secondary {
-            flex: 1;
-        }
-        
-        /* Alert Messages */
+        /* Alerts */
         .alert {
-            padding: 16px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 16px;
             font-size: 14px;
-            animation: slideDown 0.3s ease-out;
+            animation: slideIn 0.3s ease-out;
         }
         
-        @keyframes slideDown {
+        @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -254,92 +308,43 @@
             color: #fca5a5;
         }
         
-        /* Result Display */
-        .result-box {
-            margin-top: 24px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-        
-        .result-box::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .result-box::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-        
-        .result-box::-webkit-scrollbar-thumb {
-            background: rgba(102, 126, 234, 0.5);
-            border-radius: 4px;
-        }
-        
-        .jd-result {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-        }
-        
-        .jd-result h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #fff;
-        }
-        
-        .jd-result code {
-            background: rgba(102, 126, 234, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .jd-content {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 16px;
-            white-space: pre-wrap;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #e5e5e5;
-        }
-        
         /* Job List */
-        .job-card {
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        
+        .job-item {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 16px;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
-        .job-card:hover {
+        .job-item:hover {
             border-color: rgba(102, 126, 234, 0.5);
-            transform: translateX(4px);
+            transform: translateY(-2px);
         }
         
-        .job-card h3 {
+        .job-item h3 {
             font-size: 16px;
             margin-bottom: 8px;
         }
         
-        .job-card code {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
-            font-family: 'Courier New', monospace;
+        .job-meta {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
         }
         
         .job-status {
-            display: inline-block;
             padding: 4px 12px;
             border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-            margin: 8px 0;
+            font-size: 11px;
+            font-weight: 600;
         }
         
         .status-draft {
@@ -354,47 +359,33 @@
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
         
-        .job-date {
-            font-size: 12px;
+        .job-id {
+            font-size: 11px;
             color: rgba(255, 255, 255, 0.4);
-            margin-top: 8px;
+            font-family: monospace;
         }
         
-        /* Stats Box */
-        .stats-box {
-            background: rgba(102, 126, 234, 0.05);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 12px;
-            padding: 20px;
+        /* Result Display */
+        .result-box {
             margin-top: 16px;
         }
         
-        .stats-box h4 {
-            font-size: 14px;
+        .result-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 16px;
+        }
+        
+        .result-card h3 {
+            font-size: 20px;
             margin-bottom: 16px;
-            color: #fff;
         }
         
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 13px;
-        }
-        
-        .stat-row:last-child {
-            border-bottom: none;
-        }
-        
-        .stat-row strong {
-            color: #667eea;
-        }
-        
-        /* Candidate Score Badge */
         .score-badge {
             display: inline-block;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 18px;
@@ -413,7 +404,32 @@
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         }
         
-        /* Loading Spinner */
+        .analysis-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .analysis-section h4 {
+            font-size: 16px;
+            color: #667eea;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #e5e5e5;
+            white-space: pre-wrap;
+        }
+        
+        /* Loading */
         .loading {
             text-align: center;
             padding: 40px;
@@ -438,6 +454,58 @@
             font-size: 14px;
         }
         
+        /* Auth Page */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
+        }
+        
+        .auth-card {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 48px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .auth-logo img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .auth-logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .auth-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+        
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -451,83 +519,42 @@
             opacity: 0.3;
         }
         
-        /* Hidden */
-        .hidden {
-            display: none !important;
-        }
-        
-        /* Auth Page */
-        .auth-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .auth-card {
-            max-width: 450px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 48px;
-        }
-        
-        .auth-card input[type="email"],
-        .auth-card input[type="password"],
-        .auth-card input[type="text"] {
-            margin-bottom: 16px;
-        }
-        
-        .auth-logo {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-        
-        .auth-logo .logo-icon {
-            width: 40px;
-            height: 40px;
-        }
-        
-        .auth-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 32px;
-            text-align: center;
-        }
-        
-        /* Mobile Responsive */
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px 16px;
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
             }
             
-            .card {
-                padding: 24px 20px;
+            .main-content {
+                margin-left: 0;
             }
             
-            .header {
-                padding: 12px 16px;
-            }
-            
-            .user-email {
+            .user-badge {
                 display: none;
             }
             
-            .auth-card {
-                padding: 32px 24px;
+            .job-grid {
+                grid-template-columns: 1fr;
             }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.5);
         }
     </style>
 </head>
@@ -536,8 +563,8 @@
     <div id="authSection" class="auth-container">
         <div class="auth-card">
             <div class="auth-logo">
-                <img src="/logo.png" class="logo-icon" alt="ThinkLoop Logo">
-                ThinkLoop
+                <img src="/logo.png" alt="ThinkLoop">
+                <div class="auth-logo-text">ThinkLoop</div>
             </div>
             <h2 class="auth-title" id="authTitle">Welcome Back</h2>
             
@@ -546,8 +573,8 @@
             <input type="text" id="fullName" placeholder="Full Name (optional)" class="hidden">
             <input type="text" id="companyName" placeholder="Company Name (optional)" class="hidden">
             
-            <button onclick="handleAuth()" class="btn" id="authBtn">Log In</button>
-            <button onclick="toggleAuthMode()" class="btn btn-secondary" id="toggleBtn">Sign Up</button>
+            <button onclick="handleAuth()" class="btn" id="authBtn" style="width: 100%; justify-content: center;">Log In</button>
+            <button onclick="toggleAuthMode()" class="btn btn-secondary" id="toggleBtn" style="width: 100%; justify-content: center; margin-top: 12px;">Sign Up</button>
             
             <div id="authMessage"></div>
         </div>
@@ -555,78 +582,153 @@
 
     <!-- Main App -->
     <div id="appSection" class="hidden">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <img src="/logo.png" class="logo-icon" alt="ThinkLoop Logo">
-                ThinkLoop
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="logo-section">
+                <img src="/logo.png" class="logo-icon" alt="ThinkLoop">
+                <div class="logo-text">ThinkLoop</div>
             </div>
-            <div class="user-info">
-                <div class="user-email" id="userEmail"></div>
+            <div class="header-right">
+                <div class="user-badge" id="userEmail"></div>
                 <button onclick="logout()" class="btn-logout">Logout</button>
             </div>
         </div>
 
-        <div class="container">
-            <div class="dashboard-grid">
-                <!-- Left Column -->
-                <div>
-                    <!-- Create Job Card -->
-                    <div class="card">
-                        <h2 class="card-title">✨ Create Job with Jamie</h2>
-                        <textarea id="jobRequirements" placeholder="e.g., Senior Python developer, Django, fintech, remote, $120k"></textarea>
-                        <button onclick="createJob()" class="btn" id="createJobBtn">Generate Job Description</button>
-                        <div id="jobResult" class="result-box"></div>
-                    </div>
-
-                    <!-- Add Candidate Card -->
-                    <div class="card" style="margin-top: 24px;">
-                        <h2 class="card-title">🎯 Add Candidate</h2>
-                        <input type="text" id="candidateName" placeholder="Candidate Name">
-                        <input type="email" id="candidateEmail" placeholder="Candidate Email">
-                        <input type="text" id="candidatePhone" placeholder="Phone (optional)">
-                        <input type="text" id="jobId" placeholder="Job ID (copy from My Jobs)">
-                        
-                        <div class="tab-buttons">
-                            <button onclick="toggleUploadMethod('file')" class="btn-secondary btn-small">📎 Upload File</button>
-                            <button onclick="toggleUploadMethod('text')" class="btn-secondary btn-small">📝 Paste Text</button>
-                        </div>
-                        
-                        <div id="fileUploadSection" class="hidden">
-                            <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
-                            <button onclick="uploadCandidateFile()" class="btn" id="uploadFileBtn">Score with Morgan</button>
-                        </div>
-                        
-                        <div id="textUploadSection" class="hidden">
-                            <textarea id="resumeText" rows="6" placeholder="Paste resume text here..."></textarea>
-                            <button onclick="addCandidate()" class="btn" id="addCandidateBtn">Score with Morgan</button>
-                        </div>
-                        
-                        <div id="candidateResult"></div>
-                    </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Workflow</div>
+                <div class="sidebar-item active" onclick="showPage('jobs')">
+                    <span class="icon">✨</span>
+                    <span class="label">Create Job</span>
                 </div>
-
-                <!-- Right Column - My Jobs -->
-                <div>
-                    <div class="card">
-                        <h2 class="card-title">📋 My Jobs</h2>
-                        <button onclick="loadJobs()" class="btn btn-secondary">Refresh</button>
-                        <div id="jobsList" style="margin-top: 24px;"></div>
-                    </div>
+                <div class="sidebar-item" onclick="showPage('candidates')">
+                    <span class="icon">🎯</span>
+                    <span class="label">Add Candidates</span>
                 </div>
+                <div class="sidebar-item" onclick="showPage('my-jobs')">
+                    <span class="icon">📋</span>
+                    <span class="label">My Jobs</span>
+                    <span class="badge" id="jobCount">0</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">AI Agents</div>
+                <div class="sidebar-item">
+                    <span class="icon">👤</span>
+                    <span class="label">Jamie</span>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">Active</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">🔍</span>
+                    <span class="label">Morgan</span>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">Active</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">📡</span>
+                    <span class="label">Riley</span>
+                    <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">Active</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">💬</span>
+                    <span class="label">Alex</span>
+                    <span class="badge" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24;">Coming Soon</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="icon">⚖️</span>
+                    <span class="label">Sam</span>
+                    <span class="badge" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24;">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Create Job Page -->
+            <div id="jobsPage">
+                <div class="page-header">
+                    <h1 class="page-title">Create Job with Jamie</h1>
+                    <p class="page-subtitle">Generate professional job descriptions in seconds</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>✨</span>
+                            Job Requirements
+                        </div>
+                    </div>
+                    <textarea id="jobRequirements" placeholder="Example: Senior Python developer, Django expert, fintech experience, remote work, $120-150k salary, 5+ years experience"></textarea>
+                    <button onclick="createJob()" class="btn" id="createJobBtn">
+                        <span>Generate Job Description</span>
+                    </button>
+                    <div id="jobResult" class="result-box"></div>
+                </div>
+            </div>
+
+            <!-- Add Candidates Page -->
+            <div id="candidatesPage" class="hidden">
+                <div class="page-header">
+                    <h1 class="page-title">Add Candidate</h1>
+                    <p class="page-subtitle">Let Morgan score and analyze resumes</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>🎯</span>
+                            Candidate Information
+                        </div>
+                    </div>
+                    <input type="text" id="candidateName" placeholder="Candidate Name">
+                    <input type="email" id="candidateEmail" placeholder="Candidate Email">
+                    <input type="text" id="candidatePhone" placeholder="Phone (optional)">
+                    <input type="text" id="jobId" placeholder="Job ID (copy from My Jobs)">
+                    
+                    <div class="btn-group">
+                        <button onclick="toggleUploadMethod('file')" class="btn-secondary btn-small">📎 Upload File</button>
+                        <button onclick="toggleUploadMethod('text')" class="btn-secondary btn-small">📝 Paste Text</button>
+                    </div>
+                    
+                    <div id="fileUploadSection" class="hidden">
+                        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
+                        <button onclick="uploadCandidateFile()" class="btn" id="uploadFileBtn">Score with Morgan</button>
+                    </div>
+                    
+                    <div id="textUploadSection" class="hidden">
+                        <textarea id="resumeText" rows="8" placeholder="Paste resume text here..."></textarea>
+                        <button onclick="addCandidate()" class="btn" id="addCandidateBtn">Score with Morgan</button>
+                    </div>
+                    
+                    <div id="candidateResult"></div>
+                </div>
+            </div>
+
+            <!-- My Jobs Page -->
+            <div id="myJobsPage" class="hidden">
+                <div class="page-header">
+                    <h1 class="page-title">My Jobs</h1>
+                    <p class="page-subtitle">Manage your job postings</p>
+                </div>
+                
+                <button onclick="loadJobs()" class="btn btn-secondary" style="margin-bottom: 24px;">
+                    <span>🔄</span>
+                    <span>Refresh Jobs</span>
+                </button>
+                
+                <div id="jobsList" class="job-grid"></div>
             </div>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://thinkloop-production.up.railway.app';
-        // const API_URL = 'http://localhost:8000';
         
         let token = localStorage.getItem('token');
         let userEmail = localStorage.getItem('userEmail');
         let isSignupMode = false;
 
-        // Check token expiry
         if (token && isTokenExpired(token)) {
             localStorage.removeItem('token');
             localStorage.removeItem('userEmail');
@@ -651,6 +753,26 @@
             document.getElementById('appSection').classList.remove('hidden');
             document.getElementById('userEmail').innerText = userEmail || 'User';
             loadJobs();
+        }
+
+        function showPage(page) {
+            document.getElementById('jobsPage').classList.add('hidden');
+            document.getElementById('candidatesPage').classList.add('hidden');
+            document.getElementById('myJobsPage').classList.add('hidden');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            
+            if (page === 'jobs') {
+                document.getElementById('jobsPage').classList.remove('hidden');
+                document.querySelectorAll('.sidebar-item')[0].classList.add('active');
+            } else if (page === 'candidates') {
+                document.getElementById('candidatesPage').classList.remove('hidden');
+                document.querySelectorAll('.sidebar-item')[1].classList.add('active');
+            } else if (page === 'my-jobs') {
+                document.getElementById('myJobsPage').classList.remove('hidden');
+                document.querySelectorAll('.sidebar-item')[2].classList.add('active');
+                loadJobs();
+            }
         }
 
         function toggleAuthMode() {
@@ -771,7 +893,7 @@
 
             const btn = document.getElementById('createJobBtn');
             btn.disabled = true;
-            btn.innerText = 'Creating...';
+            btn.innerHTML = '<span>Creating...</span>';
 
             document.getElementById('jobResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Jamie is creating your job description...</div></div>';
 
@@ -789,10 +911,12 @@
                 if (res.ok) {
                     document.getElementById('jobResult').innerHTML = `
                         <div class="alert alert-success">Job created successfully!</div>
-                        <div class="jd-result">
+                        <div class="result-card">
                             <h3>${data.job.title}</h3>
-                            <p style="margin: 8px 0; color: rgba(255,255,255,0.6); font-size: 13px;">Job ID: <code>${data.job.id}</code></p>
-                            <div class="jd-content">${data.job.jd}</div>
+                            <p style="margin: 8px 0; color: rgba(255,255,255,0.5); font-size: 13px;">Job ID: <code style="background: rgba(102,126,234,0.1); padding: 4px 8px; border-radius: 6px;">${data.job.id}</code></p>
+                            <div class="analysis-section">
+                                <div class="analysis-content">${data.job.jd}</div>
+                            </div>
                         </div>
                     `;
                     loadJobs();
@@ -804,7 +928,7 @@
                 document.getElementById('jobResult').innerHTML = `<div class="alert alert-error">Network error. Please try again.</div>`;
             } finally {
                 btn.disabled = false;
-                btn.innerText = 'Generate Job Description';
+                btn.innerHTML = '<span>Generate Job Description</span>';
             }
         }
 
@@ -815,17 +939,22 @@
                 });
                 const data = await res.json();
                 
+                const jobCount = document.getElementById('jobCount');
+                if (jobCount) jobCount.innerText = data.jobs ? data.jobs.length : 0;
+                
                 if (data.jobs && data.jobs.length > 0) {
                     const html = data.jobs.map(job => `
-                        <div class="job-card">
+                        <div class="job-item">
                             <h3>${job.title}</h3>
-                            <p><code>${job.id}</code></p>
-                            <div class="job-status ${job.status === 'posted' ? 'status-posted' : 'status-draft'}">${job.status}</div>
-                            <p class="job-date">${new Date(job.created_at).toLocaleString()}</p>
+                            <div class="job-meta">
+                                <div class="job-status ${job.status === 'posted' ? 'status-posted' : 'status-draft'}">${job.status}</div>
+                            </div>
+                            <p class="job-id">${job.id}</p>
+                            <p style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px;">${new Date(job.created_at).toLocaleDateString()}</p>
                             ${job.status === 'draft' ? 
-                                `<button onclick="postJob('${job.id}', '${job.title}')" class="btn btn-small" style="margin-top: 12px;">Post with Riley</button>` 
+                                `<button onclick="postJob('${job.id}', '${job.title}')" class="btn btn-small" style="margin-top: 12px; width: 100%;">Post with Riley</button>` 
                                 : 
-                                `<button onclick="viewStats('${job.id}')" class="btn-secondary btn-small" style="margin-top: 12px;">View Performance</button>`
+                                `<button onclick="viewStats('${job.id}')" class="btn-secondary btn-small" style="margin-top: 12px; width: 100%;">View Performance</button>`
                             }
                             <div id="stats-${job.id}"></div>
                         </div>
@@ -864,13 +993,23 @@
                 const data = await res.json();
                 
                 const statsHtml = `
-                    <div class="stats-box">
+                    <div class="analysis-section" style="margin-top: 16px;">
                         <h4>📊 Performance Stats</h4>
-                        <div class="stat-row"><span>Total Views:</span><strong>${data.total_views}</strong></div>
-                        <div class="stat-row"><span>Total Applications:</span><strong>${data.total_applications}</strong></div>
-                        <hr style="border-color: rgba(255,255,255,0.05); margin: 12px 0;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                            <div style="background: rgba(102,126,234,0.1); padding: 12px; border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: 700; color: #667eea;">${data.total_views}</div>
+                                <div style="font-size: 11px; color: rgba(255,255,255,0.5);">Total Views</div>
+                            </div>
+                            <div style="background: rgba(16,185,129,0.1); padding: 12px; border-radius: 8px;">
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">${data.total_applications}</div>
+                                <div style="font-size: 11px; color: rgba(255,255,255,0.5);">Applications</div>
+                            </div>
+                        </div>
                         ${data.postings.map(p => `
-                            <div class="stat-row"><span>${p.board}:</span><span>${p.views} views, ${p.applications} apps</span></div>
+                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
+                                <span>${p.board}</span>
+                                <span>${p.views} views, ${p.applications} apps</span>
+                            </div>
                         `).join('')}
                     </div>
                 `;
@@ -910,7 +1049,7 @@
             btn.disabled = true;
             btn.innerText = 'Scoring...';
 
-            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is scoring...</div></div>';
+            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is analyzing the resume...</div></div>';
 
             try {
                 const res = await fetch(`${API_URL}/candidates`, {
@@ -931,14 +1070,22 @@
                 const data = await res.json();
                 if (res.ok) {
                     const scoreClass = data.candidate.score >= 80 ? 'score-high' : data.candidate.score >= 60 ? 'score-medium' : 'score-low';
+                    const analysis = data.candidate.analysis || 'No detailed analysis available';
+                    
                     document.getElementById('candidateResult').innerHTML = `
                         <div class="alert alert-success">Candidate scored successfully!</div>
-                        <div class="jd-result">
+                        <div class="result-card">
                             <h3>${data.candidate.name}</h3>
                             <div class="score-badge ${scoreClass}">Score: ${data.candidate.score}/100</div>
                             <p style="margin-top: 12px;"><strong>Recommendation:</strong> ${data.candidate.recommendation}</p>
+                            
+                            <div class="analysis-section">
+                                <h4>🔍 Morgan's Detailed Analysis</h4>
+                                <div class="analysis-content">${analysis.replace(/\n/g, '<br>')}</div>
+                            </div>
                         </div>
                     `;
+                    
                     document.getElementById('candidateName').value = '';
                     document.getElementById('candidateEmail').value = '';
                     document.getElementById('candidatePhone').value = '';
@@ -977,7 +1124,7 @@
             formData.append('candidate_phone', phone || '');
             formData.append('resume_file', fileInput.files[0]);
             
-            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is parsing and scoring...</div></div>';
+            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is parsing and analyzing...</div></div>';
             
             try {
                 const res = await fetch(`${API_URL}/candidates/upload`, {
@@ -989,14 +1136,22 @@
                 const data = await res.json();
                 if (res.ok) {
                     const scoreClass = data.candidate.score >= 80 ? 'score-high' : data.candidate.score >= 60 ? 'score-medium' : 'score-low';
+                    const analysis = data.candidate.analysis || 'No detailed analysis available';
+                    
                     document.getElementById('candidateResult').innerHTML = `
                         <div class="alert alert-success">Candidate scored successfully!</div>
-                        <div class="jd-result">
+                        <div class="result-card">
                             <h3>${data.candidate.name}</h3>
                             <div class="score-badge ${scoreClass}">Score: ${data.candidate.score}/100</div>
                             <p style="margin-top: 12px;"><strong>Recommendation:</strong> ${data.candidate.recommendation}</p>
+                            
+                            <div class="analysis-section">
+                                <h4>🔍 Morgan's Detailed Analysis</h4>
+                                <div class="analysis-content">${analysis.replace(/\n/g, '<br>')}</div>
+                            </div>
                         </div>
                     `;
+                    
                     document.getElementById('candidateName').value = '';
                     document.getElementById('candidateEmail').value = '';
                     document.getElementById('candidatePhone').value = '';
