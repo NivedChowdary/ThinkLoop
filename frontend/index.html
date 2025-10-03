@@ -1,47 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>ThinkLoop - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThinkLoop - Your AI Recruiting Team</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
             background: #000;
-            color: #f5f5f7;
-            overflow-x: hidden;
+            color: #fff;
             line-height: 1.5;
         }
         
-        /* Navigation */
-        nav {
+        /* Header */
+        .header {
             position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
-            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-        }
-        
-        nav.scrolled {
-            background: rgba(0, 0, 0, 0.95);
-        }
-        
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 40px;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 1000;
         }
         
         .logo {
@@ -51,145 +36,127 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            cursor: pointer;
         }
         
-        .nav-links a {
-            color: #f5f5f7;
-            text-decoration: none;
-            margin-left: 40px;
-            font-size: 14px;
-            transition: opacity 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s;
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .cta-nav {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 8px 20px;
-            border-radius: 20px;
-        }
-        
-        .cta-nav::after {
-            display: none;
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
+        .user-info {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 120px 40px 80px 40px;
-            position: relative;
-            overflow: hidden;
+            gap: 12px;
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: pulse 8s ease-in-out infinite;
+        .user-email {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            font-size: 14px;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .hero h1 {
-            font-size: 72px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 24px;
-            line-height: 1.1;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s infinite;
-            background-size: 200% auto;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-            100% { background-position: 0% center; }
-        }
-        
-        .hero p {
-            font-size: 24px;
-            color: #a1a1a6;
-            margin-bottom: 40px;
-            font-weight: 400;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-logout {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
             color: #fff;
-            padding: 16px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
+            font-size: 14px;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 40px 24px;
+        }
+        
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Form Elements */
+        textarea, input[type="text"], input[type="email"], input[type="file"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            margin-bottom: 16px;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        textarea::placeholder, input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
         
-        .btn-primary::before {
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -200,714 +167,810 @@
             transition: left 0.5s;
         }
         
-        .btn-primary:hover::before {
+        .btn:hover::before {
             left: 100%;
         }
         
-        .btn-primary:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
         
         .btn-secondary {
-            background: transparent;
-            color: #f5f5f7;
-            padding: 16px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .btn-secondary:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
         }
         
-        /* Features Section */
-        .features {
-            padding: 120px 40px;
-            max-width: 1200px;
-            margin: 0 auto;
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 13px;
+            width: auto;
         }
         
-        .section-title {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 80px;
-            letter-spacing: -0.02em;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s;
-        }
-        
-        .section-title.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .feature-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(102, 126, 234, 0.5);
-            background: rgba(102, 126, 234, 0.05);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
-        }
-        
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 24px;
-            display: block;
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-        
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            font-weight: 600;
-        }
-        
-        .feature-card p {
-            color: #a1a1a6;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        
-        /* Testimonials Section */
-        .testimonials {
-            padding: 120px 40px;
-            background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.03) 50%, transparent 100%);
-        }
-        
-        .testimonials-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-        
-        .testimonial-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            transition: all 0.3s;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .testimonial-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .testimonial-card:hover {
-            border-color: rgba(102, 126, 234, 0.5);
-            transform: translateY(-5px);
-        }
-        
-        .testimonial-quote {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            color: #f5f5f7;
-        }
-        
-        .testimonial-author {
+        /* Tab Buttons */
+        .tab-buttons {
             display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-        
-        .author-info h4 {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        
-        .author-info p {
-            font-size: 14px;
-            color: #a1a1a6;
-        }
-        
-        /* About Section */
-        .about {
-            padding: 120px 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-        
-        .about-text h2 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.02em;
-        }
-        
-        .about-text p {
-            font-size: 18px;
-            line-height: 1.7;
-            color: #a1a1a6;
+            gap: 12px;
             margin-bottom: 20px;
         }
         
-        .about-visual {
-            background: rgba(102, 126, 234, 0.05);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 20px;
-            padding: 60px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        .tab-buttons .btn-secondary {
+            flex: 1;
         }
         
-        .about-visual::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
-            animation: float 6s ease-in-out infinite;
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease-out;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .about-visual h3 {
-            font-size: 64px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
         }
         
-        .about-visual p {
-            font-size: 18px;
-            color: #f5f5f7;
-            position: relative;
-            z-index: 1;
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
         }
         
-        /* Agent Showcase */
-        .agents {
-            padding: 120px 40px;
-            background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.05) 50%, transparent 100%);
+        /* Result Display */
+        .result-box {
+            margin-top: 24px;
+            max-height: 600px;
+            overflow-y: auto;
         }
         
-        .agents-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .result-box::-webkit-scrollbar {
+            width: 8px;
         }
         
-        .agent-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
+        .result-box::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
         }
         
-        .agent-card {
-            background: rgba(0, 0, 0, 0.6);
+        .result-box::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 4px;
+        }
+        
+        .jd-result {
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-            transition: all 0.3s;
-            opacity: 0;
-            transform: scale(0.9);
+            border-radius: 12px;
+            padding: 24px;
         }
         
-        .agent-card.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .agent-card:hover {
-            border-color: #667eea;
-            transform: scale(1.05);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
-        }
-        
-        .agent-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            transition: transform 0.3s;
-        }
-        
-        .agent-card:hover .agent-avatar {
-            transform: rotate(360deg);
-        }
-        
-        .agent-card h4 {
+        .jd-result h3 {
             font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        
+        .jd-result code {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .jd-content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e5e5e5;
+        }
+        
+        /* Job List */
+        .job-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        
+        .job-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateX(4px);
+        }
+        
+        .job-card h3 {
+            font-size: 16px;
             margin-bottom: 8px;
         }
         
-        .agent-card .role {
-            color: #a1a1a6;
+        .job-card code {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .job-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 8px 0;
+        }
+        
+        .status-draft {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .status-posted {
+            background: rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .job-date {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 8px;
+        }
+        
+        /* Stats Box */
+        .stats-box {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        
+        .stats-box h4 {
             font-size: 14px;
             margin-bottom: 16px;
+            color: #fff;
         }
         
-        .agent-card .description {
-            color: #a1a1a6;
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-row strong {
+            color: #667eea;
+        }
+        
+        /* Candidate Score Badge */
+        .score-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 12px 0;
+        }
+        
+        .score-high {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .score-medium {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .score-low {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: #667eea;
             font-size: 14px;
-            line-height: 1.5;
         }
         
-        /* Stats Section */
-        .stats {
-            padding: 120px 40px;
+        /* Empty State */
+        .empty-state {
             text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
         }
         
-        .stats-grid {
-            max-width: 1000px;
-            margin: 60px auto 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 60px;
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
         }
         
-        .stat {
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Auth Page */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .auth-card {
+            max-width: 450px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 48px;
+        }
+        
+        .auth-logo {
             text-align: center;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.5s;
-        }
-        
-        .stat.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .stat-number {
-            font-size: 64px;
+            font-size: 32px;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-        }
-        
-        .stat-label {
-            color: #a1a1a6;
-            font-size: 18px;
-        }
-        
-        /* CTA Section */
-        .final-cta {
-            padding: 120px 40px;
-            text-align: center;
-            background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
-        }
-        
-        .final-cta h2 {
-            font-size: 56px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.02em;
-        }
-        
-        .final-cta p {
-            font-size: 20px;
-            color: #a1a1a6;
             margin-bottom: 40px;
         }
         
-        /* Footer */
-        footer {
-            padding: 60px 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .auth-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
             text-align: center;
         }
         
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .footer-links a {
-            color: #a1a1a6;
-            text-decoration: none;
-            margin: 0 20px;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: #667eea;
-        }
-        
-        /* Responsive */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 48px;
+            .container {
+                padding: 20px 16px;
             }
             
-            .hero p {
-                font-size: 18px;
+            .card {
+                padding: 24px 20px;
             }
             
-            .section-title {
-                font-size: 36px;
+            .header {
+                padding: 12px 16px;
             }
             
-            .nav-content {
-                padding: 16px 20px;
-            }
-            
-            .nav-links {
+            .user-email {
                 display: none;
             }
             
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
+            .auth-card {
+                padding: 32px 24px;
             }
-            
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        html {
-            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav id="nav">
-        <div class="nav-content">
-            <div class="logo" onclick="window.scrollTo(0,0)">ThinkLoop</div>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#agents">Agents</a>
-                <a href="#testimonials">Testimonials</a>
-                <a href="#about">About</a>
-                <a href="/app" class="cta-nav">Get Started</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Your AI recruiting team<br>that <span class="gradient-text">never sleeps</span></h1>
-            <p>Stop wasting hours on screening. Let specialized AI agents handle everything from job descriptions to interviews.</p>
-            <div class="cta-buttons">
-                <a href="/app" class="btn-primary">Start Free Trial</a>
-                <a href="#features" class="btn-secondary">See How It Works</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <h2 class="section-title">Built for modern recruiters</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">⚡</span>
-                <h3>67% Faster Hiring</h3>
-                <p>Reduce time-to-hire from weeks to days. Our AI agents work 24/7 screening candidates while you sleep.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎯</span>
-                <h3>Zero Bias</h3>
-                <p>AI evaluates candidates purely on skills and experience. No photos, names, or demographics ever reach the models.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">💰</span>
-                <h3>10x ROI</h3>
-                <p>Replace hours of manual work with AI that costs less than a cup of coffee per candidate.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🔒</span>
-                <h3>GDPR Compliant</h3>
-                <p>Enterprise-grade security with data encryption, audit logs, and full GDPR/CCPA compliance built-in.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">📊</span>
-                <h3>Real-Time Analytics</h3>
-                <p>Track performance across job boards, interview scores, and hiring metrics in one beautiful dashboard.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🤝</span>
-                <h3>Better Candidate Experience</h3>
-                <p>Instant feedback, transparent process, and respectful communication. 94% candidate satisfaction rate.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="testimonials-container">
-            <h2 class="section-title">Loved by hiring teams worldwide</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-quote">"ThinkLoop cut our time-to-hire in half. Jamie creates better JDs than I ever could, and Morgan's candidate scoring is incredibly accurate. Game changer."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SJ</div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Head of Talent, TechCorp</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-quote">"We were skeptical about AI interviews, but Alex is phenomenal. Candidates actually prefer it - they get instant scheduling and faster feedback than with human recruiters."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">MR</div>
-                        <div class="author-info">
-                            <h4>Michael Rodriguez</h4>
-                            <p>VP Recruiting, FinanceHub</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-quote">"As a small startup, we couldn't afford a full recruiting team. ThinkLoop gave us enterprise-level hiring capabilities at a fraction of the cost. Best investment we made."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">EP</div>
-                        <div class="author-info">
-                            <h4>Emily Park</h4>
-                            <p>Founder, StartupXYZ</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>Built by recruiters,<br>for recruiters</h2>
-                <p>We spent years in the staffing industry, frustrated by how much time was wasted on repetitive tasks. Screening hundreds of resumes. Scheduling interviews. Writing the same job descriptions over and over.</p>
-                <p>We knew AI could help, but existing tools were either too generic or too complicated. So we built ThinkLoop - specialized AI agents that actually understand recruiting.</p>
-                <p>No buzzwords. No hype. Just practical AI that saves you hours every single day.</p>
-            </div>
-            <div class="about-visual">
-                <h3>2025</h3>
-                <p>Founded with a mission:<br>Make hiring faster, fairer, and more human.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Agents Section -->
-    <section class="agents" id="agents">
-        <div class="agents-container">
-            <h2 class="section-title">Meet your AI team</h2>
-            <p style="text-align: center; color: #a1a1a6; font-size: 20px; max-width: 700px; margin: 0 auto;">Each agent is a specialist. Together, they handle your entire hiring workflow from job posting to offer letter.</p>
+    <!-- Auth Section -->
+    <div id="authSection" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">ThinkLoop</div>
+            <h2 class="auth-title" id="authTitle">Welcome Back</h2>
             
-            <div class="agent-list">
-                <div class="agent-card">
-                    <div class="agent-avatar">👤</div>
-                    <h4>Jamie</h4>
-                    <p class="role">Intake Specialist</p>
-                    <p class="description">Creates professional job descriptions in 30 seconds from your requirements.</p>
-                </div>
-                <div class="agent-card">
-                    <div class="agent-avatar">🔍</div>
-                    <h4>Morgan</h4>
-                    <p class="role">Resume Hunter</p>
-                    <p class="description">Scores and ranks hundreds of resumes in minutes, not hours.</p>
-                </div>
-                <div class="agent-card">
-                    <div class="agent-avatar">💬</div>
-                    <h4>Alex</h4>
-                    <p class="role">Interview Coordinator</p>
-                    <p class="description">Conducts AI screening interviews with custom questions for each role.</p>
-                </div>
-                <div class="agent-card">
-                    <div class="agent-avatar">⚖️</div>
-                    <h4>Sam</h4>
-                    <p class="role">Evaluation Lead</p>
-                    <p class="description">Creates detailed scorecards and recommends top candidates to you.</p>
-                </div>
-            </div>
+            <input type="email" id="email" placeholder="Email" autocomplete="email">
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+            <input type="text" id="fullName" placeholder="Full Name (optional)" class="hidden">
+            <input type="text" id="companyName" placeholder="Company Name (optional)" class="hidden">
+            
+            <button onclick="handleAuth()" class="btn" id="authBtn">Log In</button>
+            <button onclick="toggleAuthMode()" class="btn btn-secondary" id="toggleBtn">Sign Up</button>
+            
+            <div id="authMessage"></div>
         </div>
-    </section>
+    </div>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <h2 class="section-title">Results that speak for themselves</h2>
-        <div class="stats-grid">
-            <div class="stat">
-                <div class="stat-number">67%</div>
-                <div class="stat-label">Faster Hiring</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">94%</div>
-                <div class="stat-label">Candidate Satisfaction</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">10x</div>
-                <div class="stat-label">Return on Investment</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Always Working</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <h2>Ready to transform<br>your hiring?</h2>
-        <p>Join forward-thinking companies using AI to hire faster, better, and fairer.</p>
-        <a href="/app" class="btn-primary">Start Your Free Trial</a>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
+    <!-- Main App -->
+    <div id="appSection" class="hidden">
+        <!-- Header -->
+        <div class="header">
             <div class="logo">ThinkLoop</div>
-            <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#agents">Agents</a>
-                <a href="#testimonials">Testimonials</a>
-                <a href="#about">About</a>
-                <a href="#">Privacy</a>
-                <a href="#">Terms</a>
+            <div class="user-info">
+                <div class="user-email" id="userEmail"></div>
+                <button onclick="logout()" class="btn-logout">Logout</button>
             </div>
-            <div style="color: #a1a1a6; font-size: 14px;">© 2025 ThinkLoop. All rights reserved.</div>
         </div>
-    </footer>
+
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div>
+                    <!-- Create Job Card -->
+                    <div class="card">
+                        <h2 class="card-title">✨ Create Job with Jamie</h2>
+                        <textarea id="jobRequirements" placeholder="e.g., Senior Python developer, Django, fintech, remote, $120k"></textarea>
+                        <button onclick="createJob()" class="btn" id="createJobBtn">Generate Job Description</button>
+                        <div id="jobResult" class="result-box"></div>
+                    </div>
+
+                    <!-- Add Candidate Card -->
+                    <div class="card" style="margin-top: 24px;">
+                        <h2 class="card-title">🎯 Add Candidate</h2>
+                        <input type="text" id="candidateName" placeholder="Candidate Name">
+                        <input type="email" id="candidateEmail" placeholder="Candidate Email">
+                        <input type="text" id="candidatePhone" placeholder="Phone (optional)">
+                        <input type="text" id="jobId" placeholder="Job ID (copy from My Jobs)">
+                        
+                        <div class="tab-buttons">
+                            <button onclick="toggleUploadMethod('file')" class="btn-secondary btn-small">📎 Upload File</button>
+                            <button onclick="toggleUploadMethod('text')" class="btn-secondary btn-small">📝 Paste Text</button>
+                        </div>
+                        
+                        <div id="fileUploadSection" class="hidden">
+                            <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
+                            <button onclick="uploadCandidateFile()" class="btn" id="uploadFileBtn">Score with Morgan</button>
+                        </div>
+                        
+                        <div id="textUploadSection" class="hidden">
+                            <textarea id="resumeText" rows="6" placeholder="Paste resume text here..."></textarea>
+                            <button onclick="addCandidate()" class="btn" id="addCandidateBtn">Score with Morgan</button>
+                        </div>
+                        
+                        <div id="candidateResult"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column - My Jobs -->
+                <div>
+                    <div class="card">
+                        <h2 class="card-title">📋 My Jobs</h2>
+                        <button onclick="loadJobs()" class="btn btn-secondary">Refresh</button>
+                        <div id="jobsList" style="margin-top: 24px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
+        const API_URL = 'https://thinkloop-production.up.railway.app';
+        // const API_URL = 'http://localhost:8000';
+        
+        let token = localStorage.getItem('token');
+        let userEmail = localStorage.getItem('userEmail');
+        let isSignupMode = false;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+        // Check token expiry
+        if (token && isTokenExpired(token)) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userEmail');
+            token = null;
+        }
 
-        // Observe all animated elements
-        document.querySelectorAll('.section-title, .feature-card, .agent-card, .stat, .testimonial-card').forEach(el => {
-            observer.observe(el);
-        });
+        if (token) {
+            showApp();
+        }
 
-        // Stagger feature card animations
-        document.querySelectorAll('.feature-card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-        });
-
-        // Stagger agent card animations
-        document.querySelectorAll('.agent-card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.15}s`;
-        });
-
-        // Stagger stat animations
-        document.querySelectorAll('.stat').forEach((stat, index) => {
-            stat.style.transitionDelay = `${index * 0.2}s`;
-        });
-
-        // Stagger testimonial animations
-        document.querySelectorAll('.testimonial-card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.15}s`;
-        });
-
-        // Nav background on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
+        function isTokenExpired(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload.exp * 1000 < Date.now();
+            } catch {
+                return true;
             }
-        });
+        }
+
+        function showApp() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            document.getElementById('userEmail').innerText = userEmail || 'User';
+            loadJobs();
+        }
+
+        function toggleAuthMode() {
+            isSignupMode = !isSignupMode;
+            const fullNameInput = document.getElementById('fullName');
+            const companyNameInput = document.getElementById('companyName');
+            const authBtn = document.getElementById('authBtn');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const authTitle = document.getElementById('authTitle');
+            
+            if (isSignupMode) {
+                fullNameInput.classList.remove('hidden');
+                companyNameInput.classList.remove('hidden');
+                authBtn.innerText = 'Create Account';
+                toggleBtn.innerText = 'Back to Login';
+                authTitle.innerText = 'Create Account';
+            } else {
+                fullNameInput.classList.add('hidden');
+                companyNameInput.classList.add('hidden');
+                authBtn.innerText = 'Log In';
+                toggleBtn.innerText = 'Sign Up';
+                authTitle.innerText = 'Welcome Back';
+            }
+        }
+
+        function handleAuth() {
+            if (isSignupMode) {
+                signup();
+            } else {
+                login();
+            }
+        }
+
+        function showAuthMessage(message, type = 'error') {
+            const authMessage = document.getElementById('authMessage');
+            authMessage.className = `alert alert-${type}`;
+            authMessage.innerText = message;
+        }
+
+        async function signup() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const companyName = document.getElementById('companyName').value.trim();
+
+            if (!email || !password) {
+                showAuthMessage('Email and password are required');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, full_name: fullName, company_name: companyName })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    token = data.token;
+                    userEmail = data.user.email;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('userEmail', userEmail);
+                    showApp();
+                } else {
+                    showAuthMessage(data.detail || 'Signup failed');
+                }
+            } catch (error) {
+                showAuthMessage('Network error. Please check your connection.');
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showAuthMessage('Email and password are required');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    token = data.token;
+                    userEmail = data.user.email;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('userEmail', userEmail);
+                    showApp();
+                } else {
+                    showAuthMessage(data.detail || 'Login failed');
+                }
+            } catch (error) {
+                showAuthMessage('Network error. Please check your connection.');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userEmail');
+                window.location.href = '/';
+            }
+        }
+
+        async function createJob() {
+            const requirements = document.getElementById('jobRequirements').value.trim();
+            if (!requirements) {
+                document.getElementById('jobResult').innerHTML = '<div class="alert alert-error">Please enter job requirements</div>';
+                return;
+            }
+
+            const btn = document.getElementById('createJobBtn');
+            btn.disabled = true;
+            btn.innerText = 'Creating...';
+
+            document.getElementById('jobResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Jamie is creating your job description...</div></div>';
+
+            try {
+                const res = await fetch(`${API_URL}/jobs`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ requirements })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('jobResult').innerHTML = `
+                        <div class="alert alert-success">Job created successfully!</div>
+                        <div class="jd-result">
+                            <h3>${data.job.title}</h3>
+                            <p style="margin: 8px 0; color: rgba(255,255,255,0.6); font-size: 13px;">Job ID: <code>${data.job.id}</code></p>
+                            <div class="jd-content">${data.job.jd}</div>
+                        </div>
+                    `;
+                    loadJobs();
+                    document.getElementById('jobRequirements').value = '';
+                } else {
+                    document.getElementById('jobResult').innerHTML = `<div class="alert alert-error">${data.detail || 'Failed to create job'}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('jobResult').innerHTML = `<div class="alert alert-error">Network error. Please try again.</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Generate Job Description';
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const res = await fetch(`${API_URL}/jobs`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                if (data.jobs && data.jobs.length > 0) {
+                    const html = data.jobs.map(job => `
+                        <div class="job-card">
+                            <h3>${job.title}</h3>
+                            <p><code>${job.id}</code></p>
+                            <div class="job-status ${job.status === 'posted' ? 'status-posted' : 'status-draft'}">${job.status}</div>
+                            <p class="job-date">${new Date(job.created_at).toLocaleString()}</p>
+                            ${job.status === 'draft' ? 
+                                `<button onclick="postJob('${job.id}', '${job.title}')" class="btn btn-small" style="margin-top: 12px;">Post with Riley</button>` 
+                                : 
+                                `<button onclick="viewStats('${job.id}')" class="btn-secondary btn-small" style="margin-top: 12px;">View Performance</button>`
+                            }
+                            <div id="stats-${job.id}"></div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('jobsList').innerHTML = html;
+                } else {
+                    document.getElementById('jobsList').innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No jobs yet. Create your first job!</p></div>';
+                }
+            } catch (error) {
+                document.getElementById('jobsList').innerHTML = '<div class="alert alert-error">Failed to load jobs</div>';
+            }
+        }
+
+        async function postJob(jobId, jobTitle) {
+            if (!confirm(`Post "${jobTitle}" to job boards?`)) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/jobs/${jobId}/post`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                alert(`Job posted by Riley to ${data.boards.join(', ')}!`);
+                loadJobs();
+            } catch (error) {
+                alert('Failed to post job');
+            }
+        }
+
+        async function viewStats(jobId) {
+            try {
+                const res = await fetch(`${API_URL}/jobs/${jobId}/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                const statsHtml = `
+                    <div class="stats-box">
+                        <h4>📊 Performance Stats</h4>
+                        <div class="stat-row"><span>Total Views:</span><strong>${data.total_views}</strong></div>
+                        <div class="stat-row"><span>Total Applications:</span><strong>${data.total_applications}</strong></div>
+                        <hr style="border-color: rgba(255,255,255,0.05); margin: 12px 0;">
+                        ${data.postings.map(p => `
+                            <div class="stat-row"><span>${p.board}:</span><span>${p.views} views, ${p.applications} apps</span></div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                document.getElementById(`stats-${jobId}`).innerHTML = statsHtml;
+            } catch (error) {
+                alert('Failed to load stats');
+            }
+        }
+
+        function toggleUploadMethod(method) {
+            const fileSection = document.getElementById('fileUploadSection');
+            const textSection = document.getElementById('textUploadSection');
+            
+            if (method === 'file') {
+                fileSection.classList.remove('hidden');
+                textSection.classList.add('hidden');
+            } else {
+                fileSection.classList.add('hidden');
+                textSection.classList.remove('hidden');
+            }
+        }
+
+        async function addCandidate() {
+            const name = document.getElementById('candidateName').value.trim();
+            const email = document.getElementById('candidateEmail').value.trim();
+            const phone = document.getElementById('candidatePhone').value.trim();
+            const jobId = document.getElementById('jobId').value.trim();
+            const resume = document.getElementById('resumeText').value.trim();
+
+            if (!name || !email || !jobId || !resume) {
+                document.getElementById('candidateResult').innerHTML = '<div class="alert alert-error">Please fill all required fields</div>';
+                return;
+            }
+
+            const btn = document.getElementById('addCandidateBtn');
+            btn.disabled = true;
+            btn.innerText = 'Scoring...';
+
+            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is scoring...</div></div>';
+
+            try {
+                const res = await fetch(`${API_URL}/candidates`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        job_id: jobId,
+                        resume_text: resume,
+                        candidate_name: name,
+                        candidate_email: email,
+                        candidate_phone: phone
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    const scoreClass = data.candidate.score >= 80 ? 'score-high' : data.candidate.score >= 60 ? 'score-medium' : 'score-low';
+                    document.getElementById('candidateResult').innerHTML = `
+                        <div class="alert alert-success">Candidate scored successfully!</div>
+                        <div class="jd-result">
+                            <h3>${data.candidate.name}</h3>
+                            <div class="score-badge ${scoreClass}">Score: ${data.candidate.score}/100</div>
+                            <p style="margin-top: 12px;"><strong>Recommendation:</strong> ${data.candidate.recommendation}</p>
+                        </div>
+                    `;
+                    document.getElementById('candidateName').value = '';
+                    document.getElementById('candidateEmail').value = '';
+                    document.getElementById('candidatePhone').value = '';
+                    document.getElementById('resumeText').value = '';
+                } else {
+                    document.getElementById('candidateResult').innerHTML = `<div class="alert alert-error">${data.detail || 'Failed to score candidate'}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('candidateResult').innerHTML = `<div class="alert alert-error">Network error. Please try again.</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Score with Morgan';
+            }
+        }
+
+        async function uploadCandidateFile() {
+            const name = document.getElementById('candidateName').value.trim();
+            const email = document.getElementById('candidateEmail').value.trim();
+            const phone = document.getElementById('candidatePhone').value.trim();
+            const jobId = document.getElementById('jobId').value.trim();
+            const fileInput = document.getElementById('resumeFile');
+            
+            if (!name || !email || !jobId || !fileInput.files[0]) {
+                document.getElementById('candidateResult').innerHTML = '<div class="alert alert-error">Please fill all fields and select a file</div>';
+                return;
+            }
+            
+            const btn = document.getElementById('uploadFileBtn');
+            btn.disabled = true;
+            btn.innerText = 'Uploading...';
+
+            const formData = new FormData();
+            formData.append('job_id', jobId);
+            formData.append('candidate_name', name);
+            formData.append('candidate_email', email);
+            formData.append('candidate_phone', phone || '');
+            formData.append('resume_file', fileInput.files[0]);
+            
+            document.getElementById('candidateResult').innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Morgan is parsing and scoring...</div></div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/candidates/upload`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                
+                const data = await res.json();
+                if (res.ok) {
+                    const scoreClass = data.candidate.score >= 80 ? 'score-high' : data.candidate.score >= 60 ? 'score-medium' : 'score-low';
+                    document.getElementById('candidateResult').innerHTML = `
+                        <div class="alert alert-success">Candidate scored successfully!</div>
+                        <div class="jd-result">
+                            <h3>${data.candidate.name}</h3>
+                            <div class="score-badge ${scoreClass}">Score: ${data.candidate.score}/100</div>
+                            <p style="margin-top: 12px;"><strong>Recommendation:</strong> ${data.candidate.recommendation}</p>
+                        </div>
+                    `;
+                    document.getElementById('candidateName').value = '';
+                    document.getElementById('candidateEmail').value = '';
+                    document.getElementById('candidatePhone').value = '';
+                    fileInput.value = '';
+                } else {
+                    document.getElementById('candidateResult').innerHTML = `<div class="alert alert-error">${data.detail || 'Failed to upload resume'}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('candidateResult').innerHTML = `<div class="alert alert-error">Network error. Please try again.</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Score with Morgan';
+            }
+        }
     </script>
 </body>
 </html>
