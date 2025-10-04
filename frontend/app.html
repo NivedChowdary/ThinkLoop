@@ -539,6 +539,87 @@
             }
         }
         
+        /* Candidate Table */
+        .candidates-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .candidates-table thead {
+            background: rgba(102, 126, 234, 0.1);
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .candidates-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .candidates-table tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .candidates-table tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .candidates-table td {
+            padding: 16px;
+            font-size: 14px;
+        }
+        
+        .candidate-name {
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .candidate-email {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .candidate-score-cell {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .candidate-details {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .candidate-details.active {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -605,6 +686,10 @@
                 <div class="sidebar-item" onclick="showPage('candidates')">
                     <span class="icon">🎯</span>
                     <span class="label">Add Candidates</span>
+                </div>
+                <div class="sidebar-item" onclick="showPage('view-candidates')">
+                    <span class="icon">👥</span>
+                    <span class="label">View Candidates</span>
                 </div>
                 <div class="sidebar-item" onclick="showPage('my-jobs')">
                     <span class="icon">📋</span>
@@ -705,6 +790,28 @@
                 </div>
             </div>
 
+            <!-- View Candidates Page -->
+            <div id="viewCandidatesPage" class="hidden">
+                <div class="page-header">
+                    <h1 class="page-title">View Candidates</h1>
+                    <p class="page-subtitle">Review and manage candidates across all jobs</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>📊</span>
+                            Select Job to View Candidates
+                        </div>
+                    </div>
+                    <select id="jobSelectForCandidates" onchange="loadCandidatesForJob()" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; margin-bottom: 20px;">
+                        <option value="">Select a job...</option>
+                    </select>
+                    
+                    <div id="candidatesTableContainer"></div>
+                </div>
+            </div>
+
             <!-- My Jobs Page -->
             <div id="myJobsPage" class="hidden">
                 <div class="page-header">
@@ -758,6 +865,7 @@
         function showPage(page) {
             document.getElementById('jobsPage').classList.add('hidden');
             document.getElementById('candidatesPage').classList.add('hidden');
+            document.getElementById('viewCandidatesPage').classList.add('hidden');
             document.getElementById('myJobsPage').classList.add('hidden');
             
             document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
@@ -768,9 +876,13 @@
             } else if (page === 'candidates') {
                 document.getElementById('candidatesPage').classList.remove('hidden');
                 document.querySelectorAll('.sidebar-item')[1].classList.add('active');
+            } else if (page === 'view-candidates') {
+                document.getElementById('viewCandidatesPage').classList.remove('hidden');
+                document.querySelectorAll('.sidebar-item')[2].classList.add('active');
+                populateJobSelect();
             } else if (page === 'my-jobs') {
                 document.getElementById('myJobsPage').classList.remove('hidden');
-                document.querySelectorAll('.sidebar-item')[2].classList.add('active');
+                document.querySelectorAll('.sidebar-item')[3].classList.add('active');
                 loadJobs();
             }
         }
@@ -1164,6 +1276,127 @@
             } finally {
                 btn.disabled = false;
                 btn.innerText = 'Score with Morgan';
+            }
+        }
+
+        // Populate job select dropdown
+        async function populateJobSelect() {
+            try {
+                const res = await fetch(`${API_URL}/jobs`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                const select = document.getElementById('jobSelectForCandidates');
+                select.innerHTML = '<option value="">Select a job...</option>';
+                
+                if (data.jobs && data.jobs.length > 0) {
+                    data.jobs.forEach(job => {
+                        const option = document.createElement('option');
+                        option.value = job.id;
+                        option.textContent = `${job.title} (${job.status})`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load jobs for select');
+            }
+        }
+
+        // Load candidates for selected job
+        async function loadCandidatesForJob() {
+            const jobId = document.getElementById('jobSelectForCandidates').value;
+            const container = document.getElementById('candidatesTableContainer');
+            
+            if (!jobId) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-text">Loading candidates...</div></div>';
+            
+            try {
+                const res = await fetch(`${API_URL}/jobs/${jobId}/candidates`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                if (data.candidates && data.candidates.length > 0) {
+                    const sortedCandidates = data.candidates.sort((a, b) => b.score - a.score);
+                    
+                    const tableHtml = `
+                        <table class="candidates-table">
+                            <thead>
+                                <tr>
+                                    <th>Candidate</th>
+                                    <th>Score</th>
+                                    <th>Recommendation</th>
+                                    <th>Status</th>
+                                    <th>Applied</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sortedCandidates.map(c => {
+                                    const scoreClass = c.score >= 80 ? 'score-high' : c.score >= 60 ? 'score-medium' : 'score-low';
+                                    const scoreColor = c.score >= 80 ? '#10b981' : c.score >= 60 ? '#f59e0b' : '#ef4444';
+                                    
+                                    return `
+                                        <tr onclick="toggleCandidateDetails('${c.id}')">
+                                            <td>
+                                                <div class="candidate-name">${c.name}</div>
+                                                <div class="candidate-email">${c.email}</div>
+                                            </td>
+                                            <td>
+                                                <span class="candidate-score-cell" style="color: ${scoreColor}">${c.score}</span>
+                                            </td>
+                                            <td>${c.recommendation}</td>
+                                            <td><span class="job-status status-${c.status === 'screened' ? 'posted' : 'draft'}">${c.status}</span></td>
+                                            <td style="color: rgba(255,255,255,0.5); font-size: 12px;">${new Date(c.applied_at).toLocaleDateString()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="padding: 0;">
+                                                <div id="details-${c.id}" class="candidate-details">
+                                                    <h4 style="font-size: 16px; margin-bottom: 16px; color: #667eea;">Morgan's Analysis for ${c.name}</h4>
+                                                    <div class="analysis-content" style="white-space: pre-wrap; line-height: 1.7;">${c.analysis || 'No detailed analysis available'}</div>
+                                                    <div class="action-buttons">
+                                                        <button class="btn btn-small" onclick="event.stopPropagation(); scheduleInterview('${c.id}')">Schedule Interview</button>
+                                                        <button class="btn-secondary btn-small" onclick="event.stopPropagation(); rejectCandidate('${c.id}')">Reject</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                    
+                    container.innerHTML = tableHtml;
+                } else {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><p>No candidates for this job yet</p></div>';
+                }
+            } catch (error) {
+                container.innerHTML = '<div class="alert alert-error">Failed to load candidates</div>';
+            }
+        }
+
+        // Toggle candidate details
+        function toggleCandidateDetails(candidateId) {
+            const details = document.getElementById(`details-${candidateId}`);
+            if (details) {
+                details.classList.toggle('active');
+            }
+        }
+
+        // Schedule interview (placeholder)
+        function scheduleInterview(candidateId) {
+            alert(`Interview scheduling for candidate ${candidateId} - Coming soon with Alex!`);
+        }
+
+        // Reject candidate (placeholder)
+        function rejectCandidate(candidateId) {
+            if (confirm('Are you sure you want to reject this candidate?')) {
+                alert(`Candidate ${candidateId} rejected - This will update status in the future`);
             }
         }
     </script>
