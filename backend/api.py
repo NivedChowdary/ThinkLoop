@@ -264,15 +264,19 @@ def list_candidates(
         
         candidates = get_job_candidates(db, job_id)
         return {
-            "candidate": {
-                "id": candidate.id,
-                "name": candidate.full_name,
-                "email": candidate.email,
-                "score": candidate.score,
-                "recommendation": candidate.recommendation,
-                "analysis": candidate.analysis,  # ADD THIS LINE
-                "status": candidate.status
-            }
+            "candidates": [
+                {
+                    "id": c.id, 
+                    "name": c.full_name,
+                    "email": c.email,
+                    "score": c.score,
+                    "recommendation": c.recommendation,
+                    "analysis": c.analysis,  # ADD THIS
+                    "status": c.status,
+                    "applied_at": str(c.applied_at)
+                } 
+                for c in candidates
+            ]
         }
     except HTTPException:
         raise
